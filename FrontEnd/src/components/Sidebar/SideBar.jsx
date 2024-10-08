@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { FaBars, FaEye, FaPlus, FaEdit, FaTrash, FaKey } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -38,11 +39,15 @@ const SideBar = () => {
                             exit="hidden"
                             className="logo"
                         >
-                            DoSomeCoding
+                            Menu
                         </motion.h1>
                     )}
                 </AnimatePresence>
-                <FaBars onClick={toggle} className="bars" />
+                {isOpen ? (
+                    <RxCross2 onClick={toggle} className="bars" />
+                ) : (
+                    <FaBars onClick={toggle} className="bars" />
+                )}
             </div>
             <section className="routes">
                 {routes.map((route, index) => (

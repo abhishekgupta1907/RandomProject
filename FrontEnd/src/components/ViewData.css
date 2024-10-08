@@ -1,0 +1,60 @@
+/* ViewData.css */
+.view-data-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 200px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+}
+
+.view-data-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.view-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.view-data-table th,
+.view-data-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.view-data-table th {
+    background-color: #4caf50;
+    color: white;
+}
+
+.view-data-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.view-data-table tr:hover {
+    background-color: #ddd;
+}
+
+.view-data-table td {
+    color: #555;
+}
+
+@media screen and (max-width: 768px) {
+    .view-data-container {
+        margin-left: 0; /* Sidebar collapse */
+        padding: 10px;
+    }
+
+    .view-data-table th,
+    .view-data-table td {
+        padding: 10px;
+        font-size: 14px;
+    }
+}

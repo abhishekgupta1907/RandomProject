@@ -6,6 +6,7 @@ import UpdateData from "./components/UpdateData";
 import DeleteData from "./components/DeleteData";
 import ChangePassword from "./components/ChangePassword";
 import SideBar from "./components/SideBar/SideBar";
+import LoginPage from "./components/LoginPage/LoginPage";
 
 const App = () => {
     return (
@@ -14,6 +15,7 @@ const App = () => {
                 <SideBar />
                 <div className="content">
                     <Routes>
+                        <Route path="/" element={<LoginPage />} />
                         <Route path="/view" element={<ViewData />} />
                         <Route path="/insert" element={<InsertData />} />
                         <Route path="/update" element={<UpdateData />} />
