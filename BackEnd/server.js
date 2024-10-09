@@ -87,6 +87,23 @@ app.post("/register", (req, res) => {
       res.json({ message: "User created", userId: result.insertId, Email, Password });
    });
 });
+app.post("/change-password", (req, res) => {
+   const { currentPassword, newPassword, email } = req.body;
+
+   const sql = "UPDATE users SET Password = ? WHERE Password = ? AND email = ?";
+   db.query(sql, [newPassword, currentPassword, email], (err, result) => {
+      if (err) {
+         return res.status(500).send(err);
+      }
+
+      if (result.affectedRows === 0) {
+         return res.status(400).json({ message: "Current password is incorrect" });
+      }
+
+      res.json({ message: "Password changed successfully" });
+   });
+});
+
 app.listen(5000, () => {
    console.log('Server running on port 5000')
 })

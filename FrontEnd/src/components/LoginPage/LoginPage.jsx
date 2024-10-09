@@ -5,6 +5,7 @@ import "./LoginPage.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 function LoginPage({ setLoggedUser }) {
+    const [invalidUser, setInvalidUser] = useState(false);
     const navigate = useNavigate();
     const [formdata, setFormData] = useState({
         Email: "",
@@ -15,7 +16,14 @@ function LoginPage({ setLoggedUser }) {
         Email: "",
         Password: "",
     });
-    async function asyncAwait() {
+    async function asyncAwait(e) {
+        e.preventDefault(); // Prevent form submission
+
+        // Check if both Email and Password are filled
+        if (!formdata.Email || !formdata.Password) {
+            alert("Both email and password must be filled");
+            return;
+        }
         // Convert id to number if necessary
         const Data = {
             ...formdata,
@@ -37,11 +45,18 @@ function LoginPage({ setLoggedUser }) {
             navigate("/view");
             setFormData({ Email: "", Password: "" }); // Reset form after successful submission
         } catch (error) {
+            setInvalidUser(true);
             setFormData({ Email: "", Password: "" });
             console.error("Error adding data:", error);
         }
     }
-    async function asyncAwait1() {
+    async function asyncAwait1(e) {
+        e.preventDefault(); // Prevent form submission
+
+        // Check if both Email and Password are filled
+        if (!formdata1.Email || !formdata1.Password || !formdata1.Name) {
+            return;
+        }
         // Convert id to number if necessary
         const Data = {
             ...formdata1,
@@ -105,6 +120,7 @@ function LoginPage({ setLoggedUser }) {
                                     Name: e.target.value,
                                 })
                             }
+                            required
                         />
                         <input
                             type="email"
@@ -116,6 +132,7 @@ function LoginPage({ setLoggedUser }) {
                                     Email: e.target.value,
                                 })
                             }
+                            required
                         />
                         <input
                             type="password"
@@ -127,8 +144,9 @@ function LoginPage({ setLoggedUser }) {
                                     Password: e.target.value,
                                 })
                             }
+                            required
                         />
-                        <button type="button" onClick={asyncAwait1}>
+                        <button type="submit" onClick={asyncAwait1}>
                             Sign Up
                         </button>
                     </form>
@@ -161,6 +179,7 @@ function LoginPage({ setLoggedUser }) {
                                     Email: e.target.value,
                                 })
                             }
+                            required
                         />
                         <input
                             type="password"
@@ -172,9 +191,14 @@ function LoginPage({ setLoggedUser }) {
                                     Password: e.target.value,
                                 })
                             }
+                            required
                         />
-                        <a href="#">Forget Your Password?</a>
-                        <button type="button" onClick={asyncAwait}>
+                        {invalidUser && (
+                            <div style={{ color: "red", fontSize: "20px" }}>
+                                Invalid User
+                            </div>
+                        )}
+                        <button type="submit" onClick={asyncAwait}>
                             Sign In
                         </button>
                     </form>
