@@ -4,6 +4,7 @@ import "./ViewData.css";
 
 const ViewData = () => {
     const [Data, setData] = useState([]);
+    const [selectedData, setSelectedData] = useState(null);
 
     useEffect(() => {
         const getData = async () => {
@@ -14,7 +15,6 @@ const ViewData = () => {
 
             try {
                 const response = await axios(config);
-                //console.log("data:", response.data);
                 setData(response.data);
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -23,6 +23,10 @@ const ViewData = () => {
 
         getData();
     }, []);
+
+    const handleViewClick = (data) => {
+        setSelectedData(data);
+    };
 
     return (
         <div className="view-data-container">
@@ -33,6 +37,7 @@ const ViewData = () => {
                         <th>Name</th>
                         <th>ID</th>
                         <th>City</th>
+                        <th>View</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,10 +46,35 @@ const ViewData = () => {
                             <td>{data.name}</td>
                             <td>{data.id}</td>
                             <td>{data.city}</td>
+                            <td>
+                                <button onClick={() => handleViewClick(data)}>
+                                    View
+                                </button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+
+            {/* Render the blur overlay and card if an item is selected */}
+            {selectedData && (
+                <>
+                    <div className="blur-overlay"></div>{" "}
+                    {/* Blurred background overlay */}
+                    <div className="selected-data-card">
+                        <h2>Details for {selectedData.name}</h2>
+                        <p>
+                            <strong>ID:</strong> {selectedData.id}
+                        </p>
+                        <p>
+                            <strong>City:</strong> {selectedData.city}
+                        </p>
+                        <button onClick={() => setSelectedData(null)}>
+                            Close
+                        </button>
+                    </div>
+                </>
+            )}
         </div>
     );
 };

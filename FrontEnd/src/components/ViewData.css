@@ -58,3 +58,48 @@
         font-size: 14px;
     }
 }
+/* Overlay that will cover the whole window and apply blur */
+.blur-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4); /* Slight transparent dark layer */
+    backdrop-filter: blur(10px); /* Apply the blur effect */
+    z-index: 999; /* Ensure the blur is above all content */
+}
+
+/* The card itself, centered in the middle */
+.selected-data-card {
+    width: 500px;
+    height: 500px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 1); /* Solid white background */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Ensure it's above the blur */
+}
+
+/* Button styling inside the card */
+.selected-data-card button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.selected-data-card button:hover {
+    background-color: #0056b3;
+}
