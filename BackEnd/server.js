@@ -4,9 +4,8 @@ app.use(express.json());
 const cors = require("cors");
 app.use(cors());
 const mysql = require("mysql2");
-const API = [
 
-]
+// Create a connection to the database
 const db = mysql.createConnection({
    host: "localhost",
    user: "root",
@@ -61,6 +60,31 @@ app.put("/update/:id", (req, res) => {
          return res.status(500).send(err);
       }
       res.json({ message: "User updated" });
+   });
+});
+
+app.post("/login", (req, res) => {
+   const { Email, Password } = req.body;
+   const sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+   db.query(sql, [Email, Password], (err, results) => {
+      if (err) {
+         return res.status(500).send("Server Error");
+      }
+      if (results.length === 0) {
+         return res.status(404).send("User not found");
+      }
+      res.json(results);
+   });
+});
+
+app.post("/register", (req, res) => {
+   const { Name, Email, Password } = req.body;
+   const sql = "INSERT INTO users (email, password) VALUES (?, ?)";
+   db.query(sql, [Email, Password], (err, result) => {
+      if (err) {
+         return res.status(500).send(err);
+      }
+      res.json({ message: "User created", userId: result.insertId, Email, Password });
    });
 });
 app.listen(5000, () => {

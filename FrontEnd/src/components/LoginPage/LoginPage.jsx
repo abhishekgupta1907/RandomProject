@@ -1,7 +1,71 @@
+/* eslint-disable react/prop-types */
+
 import { useState } from "react";
 import "./LoginPage.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+function LoginPage({ setLoggedUser }) {
+    const navigate = useNavigate();
+    const [formdata, setFormData] = useState({
+        Email: "",
+        Password: "",
+    });
+    const [formdata1, setFormData1] = useState({
+        Name: "",
+        Email: "",
+        Password: "",
+    });
+    async function asyncAwait() {
+        // Convert id to number if necessary
+        const Data = {
+            ...formdata,
+        };
 
-function LoginPage() {
+        let config = {
+            method: "POST",
+            url: "http://localhost:5000/login",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            data: Data,
+        };
+
+        try {
+            const response = await axios(config);
+            console.log("user:", response.data); // Log the success response
+            setLoggedUser(true);
+            navigate("/view");
+            setFormData({ Email: "", Password: "" }); // Reset form after successful submission
+        } catch (error) {
+            setFormData({ Email: "", Password: "" });
+            console.error("Error adding data:", error);
+        }
+    }
+    async function asyncAwait1() {
+        // Convert id to number if necessary
+        const Data = {
+            ...formdata1,
+        };
+
+        let config = {
+            method: "POST",
+            url: "http://localhost:5000/register",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            data: Data,
+        };
+
+        try {
+            const response = await axios(config);
+            console.log("user:", response.data); // Log the success response
+            handleLoginClick();
+            setFormData({ Name: "", Email: "", Password: "" }); // Reset form after successful submission
+        } catch (error) {
+            console.error("Error adding data:", error);
+        }
+    }
+
     const [isActive, setIsActive] = useState(false);
 
     const handleRegisterClick = () => setIsActive(true);
@@ -31,10 +95,42 @@ function LoginPage() {
                             </a>
                         </div>
                         <span>or use your email for registration</span>
-                        <input type="text" placeholder="Name" />
-                        <input type="email" placeholder="Email" />
-                        <input type="password" placeholder="Password" />
-                        <button type="button">Sign Up</button>
+                        <input
+                            type="text"
+                            placeholder="Name"
+                            value={formdata1.Name}
+                            onChange={(e) =>
+                                setFormData1({
+                                    ...formdata1,
+                                    Name: e.target.value,
+                                })
+                            }
+                        />
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={formdata1.Email}
+                            onChange={(e) =>
+                                setFormData1({
+                                    ...formdata1,
+                                    Email: e.target.value,
+                                })
+                            }
+                        />
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={formdata1.Password}
+                            onChange={(e) =>
+                                setFormData1({
+                                    ...formdata1,
+                                    Password: e.target.value,
+                                })
+                            }
+                        />
+                        <button type="button" onClick={asyncAwait1}>
+                            Sign Up
+                        </button>
                     </form>
                 </div>
                 <div className="form-container sign-in">
@@ -55,10 +151,32 @@ function LoginPage() {
                             </a>
                         </div>
                         <span>or use your email and password</span>
-                        <input type="email" placeholder="Email" />
-                        <input type="password" placeholder="Password" />
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={formdata.Email}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formdata,
+                                    Email: e.target.value,
+                                })
+                            }
+                        />
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={formdata.Password}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formdata,
+                                    Password: e.target.value,
+                                })
+                            }
+                        />
                         <a href="#">Forget Your Password?</a>
-                        <button type="button">Sign In</button>
+                        <button type="button" onClick={asyncAwait}>
+                            Sign In
+                        </button>
                     </form>
                 </div>
                 <div className="toggle-container">

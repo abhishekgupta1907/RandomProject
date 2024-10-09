@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import "./DeleteData.css"; 
+import "./DeleteData.css";
 
 const DeleteData = () => {
     const [id, setId] = useState("");
@@ -14,6 +14,7 @@ const DeleteData = () => {
         try {
             const response = await axios(config);
             console.log("Data deleted:", response.data);
+            setId("");
         } catch (error) {
             console.error("Error deleting data:", error);
         }
