@@ -4,7 +4,7 @@ import { useState } from "react";
 import "./LoginPage.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-function LoginPage({ setLoggedUser }) {
+function LoginPage({ setLoggedUser, setUser }) {
     const [invalidUser, setInvalidUser] = useState(false);
     const navigate = useNavigate();
     const [formdata, setFormData] = useState({
@@ -42,6 +42,7 @@ function LoginPage({ setLoggedUser }) {
             const response = await axios(config);
             console.log("user:", response.data); // Log the success response
             setLoggedUser(true);
+            setUser(response.data[0].Email);
             navigate("/view");
             setFormData({ Email: "", Password: "" }); // Reset form after successful submission
         } catch (error) {

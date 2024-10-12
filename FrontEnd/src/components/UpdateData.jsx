@@ -26,6 +26,7 @@ const UpdateData = () => {
             console.log("data updated:", response.data);
             setFormData({ name: "", id: "", city: "" });
         } catch (error) {
+            alert("No such data");
             console.error("Error adding data:", error);
         }
     }
@@ -84,9 +85,10 @@ const UpdateData = () => {
 };
 const styles = {
     container: {
-        width: "300px",
-        margin: "50px auto",
-        padding: "20px",
+        width: "400px",
+        height: "auto",
+        margin: "20px auto",
+        padding: "30px",
         border: "1px solid #ddd",
         borderRadius: "8px",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -94,9 +96,9 @@ const styles = {
         backgroundColor: "#f9f9f9",
     },
     title: {
+        marginTop: "20px",
         textAlign: "center",
         fontSize: "2rem",
-        marginBottom: "20px",
         color: "#333",
     },
     inputGroup: {

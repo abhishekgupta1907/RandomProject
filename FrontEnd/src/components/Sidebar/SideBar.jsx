@@ -1,8 +1,11 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { NavLink } from "react-router-dom";
 import { FaBars, FaEye, FaPlus, FaEdit, FaTrash, FaKey } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { BiLogOut } from "react-icons/bi";
 
 const routes = [
     { path: "/view", name: "View Data", icon: <FaEye /> },
@@ -12,7 +15,7 @@ const routes = [
     { path: "/change-password", name: "Change Password", icon: <FaKey /> },
 ];
 
-const SideBar = () => {
+const SideBar = ({ loggedUser, setLoggedUser, user }) => {
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
 
@@ -24,7 +27,7 @@ const SideBar = () => {
     return (
         <motion.div
             animate={{
-                width: isOpen ? "200px" : "45px",
+                width: isOpen ? "230px" : "45px",
                 transition: { duration: 0.5, type: "spring", damping: 10 },
             }}
             className="sidebar"
@@ -39,12 +42,16 @@ const SideBar = () => {
                             exit="hidden"
                             className="logo"
                         >
-                            Menu
+                            {user}
                         </motion.h1>
                     )}
                 </AnimatePresence>
                 {isOpen ? (
-                    <RxCross2 onClick={toggle} className="bars" />
+                    <RxCross2
+                        style={{ cursor: "pointer", marginTop: "5px" }}
+                        onClick={toggle}
+                        className="bars"
+                    />
                 ) : (
                     <FaBars onClick={toggle} className="bars" />
                 )}
@@ -69,6 +76,34 @@ const SideBar = () => {
                     </NavLink>
                 ))}
             </section>
+            <div
+                style={{
+                    marginLeft: "5px",
+                    marginTop: "10px",
+                    position: "absolute",
+                    bottom: "10px",
+                    cursor: "pointer",
+                    fontWeight: "500",
+                }}
+            >
+                {isOpen ? (
+                    <button
+                        style={{
+                            marginLeft: "25px",
+                            backgroundColor: "red",
+                            color: "white",
+                        }}
+                        onClick={() => setLoggedUser(false)}
+                    >
+                        Logout
+                    </button>
+                ) : (
+                    <BiLogOut
+                        onClick={() => setLoggedUser(false)}
+                        className="bars"
+                    />
+                )}
+            </div>
         </motion.div>
     );
 };
