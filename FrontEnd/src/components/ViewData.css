@@ -1,41 +1,35 @@
-/* Ensure the content takes available space after the sidebar */
 .view-data-container {
     padding: 20px;
-    margin-left: 250px; /* Adjust this based on the width of your sidebar */
+    margin-left: 250px;
     display: flex;
     flex-direction: column;
 }
 
-/* Styling the card list to align next to the sidebar */
 .card-list {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: flex-start; /* Align cards to the left */
+    justify-content: flex-start;
 }
 
-/* Styling for individual cards */
 .card {
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     width: 300px;
     overflow: hidden;
 }
 
-/* Image inside each card */
 .card-image img {
     width: 100%;
     height: auto;
 }
 
-/* Content inside each card */
 .card-content {
     padding: 15px;
 }
 
-/* Button actions */
 .card-actions {
     margin-top: 10px;
     display: flex;
@@ -67,7 +61,6 @@
     z-index: 1001;
 }
 
-/* Blur overlay for selected card view */
 .blur-overlay {
     position: fixed;
     top: 0;
