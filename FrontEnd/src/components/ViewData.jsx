@@ -45,31 +45,29 @@ const ViewData = () => {
     }
 
     return (
-        <>
-            <div className="view-data-container">
-                <h1 className="view-data-title">View Data</h1>
-                <div className="card-list">
-                    {Data.map((data) => (
-                        <div key={data.id} className="card">
-                            <div className="card-image">
-                                {data.image && data.imageType ? (
-                                    <img
-                                        src={`data:${data.imageType};base64,${data.image}`}
-                                        alt={data.name}
-                                        style={{
-                                            width: "100%",
-                                            height: "auto",
-                                        }}
-                                    />
-                                ) : (
-                                    <p>No image available</p>
-                                )}
-                            </div>
-                            <div className="card-content">
-                                <h2>{data.name}</h2>
-                                <p>ID: {data.id}</p>
-                                <p>City: {data.city}</p>
-                                <div className="card-actions">
+        <div className="view-data-container">
+            <h1 className="view-data-title">View Data</h1>
+            <div className="table-container">
+                <table className="data-table">
+                    <thead>
+                        <tr>
+                            <th>image</th>
+                            <th>Name</th>
+                            <th>ID</th>
+                            <th>City</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {Data.map((data) => (
+                            <tr key={data.id}>
+                                <td className="card-image">
+                                    <img src={data.image} alt={data.name} />
+                                </td>
+                                <td>{data.name}</td>
+                                <td>{data.id}</td>
+                                <td>{data.city}</td>
+                                <td className="card-actions">
                                     <button
                                         onClick={() => handleViewClick(data)}
                                     >
@@ -78,38 +76,32 @@ const ViewData = () => {
                                     <button onClick={() => asyncAwait(data)}>
                                         Delete
                                     </button>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                {selectedData && (
-                    <>
-                        <div className="blur-overlay"></div>
-                        <div className="selected-data-card">
-                            <h2>Details for {selectedData.name}</h2>
-                            <p>
-                                <strong>ID:</strong> {selectedData.id}
-                            </p>
-                            <p>
-                                <strong>City:</strong> {selectedData.city}
-                            </p>
-                            <div>
-                                <img
-                                    src={`data:image/png;base64,${selectedData.image}`}
-                                    alt={selectedData.name}
-                                    style={{ width: "100%", height: "auto" }}
-                                />
-                            </div>
-                            <button onClick={() => setSelectedData(null)}>
-                                Close
-                            </button>
-                        </div>
-                    </>
-                )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
-        </>
+
+            {selectedData && (
+                <>
+                    <div className="blur-overlay"></div>
+                    <div className="selected-data-card">
+                        <h2>Details for {selectedData.name}</h2>
+                        <p>
+                            <strong>ID:</strong> {selectedData.id}
+                        </p>
+                        <p>
+                            <strong>City:</strong> {selectedData.city}
+                        </p>
+                        <img src={selectedData.image} alt={selectedData.name} />
+                        <button onClick={() => setSelectedData(null)}>
+                            Close
+                        </button>
+                    </div>
+                </>
+            )}
+        </div>
     );
 };
 

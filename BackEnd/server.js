@@ -3,10 +3,12 @@ const mysql = require("mysql2");
 const app = express();
 const cors = require("cors");
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
 app.use(express.json());
 app.use(cors());
-
+// Multer setup for memory storage
+const storage = multer.memoryStorage();
+// const upload = multer({ storage: storage }).single('image');
+const upload = multer({ storage: storage });
 // Create a connection to the database
 const db = mysql.createConnection({
    host: "localhost",
@@ -32,38 +34,66 @@ app.get("/", (req, res) => {
       }
 
       // Convert image buffer to base64 and attach the MIME type (assuming it's PNG)
-      const dataWithImages = results.map((row) => ({
-         ...row,
-         image: row.image ? Buffer.from(row.image).toString('base64') : null,
-         imageType: row.image ? 'image/png' : null,  // Adjust if image type is different
+      // const dataWithImages = results.map((row) => ({
+      //    ...row,
+      //    image: row.image ? Buffer.from(row.image).toString('base64') : null,
+      //    imageType: row.image ? 'image/png' : null,  // Adjust if image type is different
+      // }));
+      //res.json(dataWithImages);
+      const students = results.map((student) => ({
+         ...student,
+         image: `data:image/jpeg;base64,${student.image.toString('base64')}`
       }));
-
-      res.json(dataWithImages);
+      res.status(200).json(students);
    });
 });
 
 //Insert student data
 app.post("/insert", upload.single('image'), (req, res) => {
    const { id, name, city } = req.body;
-   const image = req.file;
+   const image = req.file.buffer;
    // Log the incoming data for debugging
    // console.log("Request body:", req.body);
    //console.log("Uploaded file:", image);
    const sql = "INSERT INTO students (id,name, city, image) VALUES (?, ?,?,?)";
-   db.query(sql, [id, name, city, image ? image.filename : null], (err, result) => {
+   //const insertQuery = "CALL insertData(?, ?,?,?)";
+   db.query(insertQuery, [id, name, city, image], (err, result) => {
       if (err) {
          return res.status(500).send(err);
       }
       res.json({ message: "User created", userId: result.insertId });
    });
 });
+// app.post('/insert', (req, res) => {
+//    upload(req, res, (err) => {
+//       if (err) {
+//          return res.status(400).json({ error: err });
+//       } else {
+//          const { id, name, city } = req.body;
+//          const image = req.file.buffer;
+//          if (!name || !image) {
+//             return res.status(400).json({ error: 'Name and Photo are required' });
+//          }
+//          const query = "INSERT INTO students (id,name, city, image) VALUES (?, ?,?,?)";
+//          db.query(query, [id, name, city, image], (error, results) => {
+//             if (error) {
+//                return res.status(500).json({ error: 'Database error' });
+//             }
+//             res.status(200).json({
+//                message: 'Student info uploaded successfully', studentId:
+//                   results.insertId
+//             });
+//          });
+//       }
+//    });
+// });
 //Delete a student by ID
 app.delete("/delete/:id", (req, res) => {
    let { id } = req.params;
    id = parseInt(id);
    //console.log(id);
-   const sql = "DELETE FROM students WHERE id = ?";
-
+   //const sql = "DELETE FROM students WHERE id = ?";
+   const sql = "CALL deleteData(?)";
    db.query(sql, [id], (err, result) => {
       if (err) {
          return res.status(500).send(err);
@@ -81,14 +111,18 @@ app.put("/update/:id", (req, res) => {
    const { name, city } = req.body;
    const { id } = req.params;
    const sql = "UPDATE students SET name = ?, city = ? WHERE id = ?";
-   db.query(sql, [name, city, id], (err, result) => {
+   // const sql = "CALL updateData(?,?,?)";
+   db.query(sql, [id, name, city], (err, result) => {
       if (err) {
          return res.status(500).send(err);
       }
-      if (result.affectedRows === 0) {
+      // Stored procedure results come as an array of arrays
+      const affectedRows = result && result[0] && result[0].affectedRows;
+
+      if (affectedRows === 0) {
          return res.status(404).json({ message: "No user found with this ID" });
       } else {
-         res.json({ message: "User updated" });
+         res.json({ message: "User updated successfully" });
       }
    });
 });
@@ -121,7 +155,7 @@ app.post("/register", (req, res) => {
 app.post("/change-password", (req, res) => {
    const { currentPassword, newPassword, email } = req.body;
 
-   const sql = "UPDATE users SET Password = ? WHERE Password = ? AND email = ?";
+   const sql = "UPDATE users SET password = ? WHERE password = ? AND email = ?";
    db.query(sql, [newPassword, currentPassword, email], (err, result) => {
       if (err) {
          return res.status(500).send(err);

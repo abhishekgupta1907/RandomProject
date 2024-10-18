@@ -13,6 +13,7 @@ import ChangePassword from "./components/ChangePassword";
 import SideBar from "./components/SideBar/SideBar";
 import LoginPage from "./components/LoginPage/LoginPage";
 import { useState } from "react";
+import HomePage from "./components/HomePage";
 
 const App = () => {
     const [user, setUser] = useState(null);
@@ -30,6 +31,7 @@ const App = () => {
                         />{" "}
                         <div className="content">
                             <Routes>
+                                <Route path="/" element={<HomePage />} />
                                 <Route path="/view" element={<ViewData />} />
                                 <Route
                                     path="/insert"

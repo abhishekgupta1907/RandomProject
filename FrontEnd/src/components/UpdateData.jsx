@@ -24,6 +24,7 @@ const UpdateData = () => {
         try {
             const response = await axios(config);
             console.log("data updated:", response.data);
+            alert("data updated successfully");
             setFormData({ name: "", id: "", city: "" });
         } catch (error) {
             alert("No such data");
